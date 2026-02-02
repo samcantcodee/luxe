@@ -1,0 +1,410 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  Bus, 
+  Car, 
+  Users, 
+  MapPin, 
+  ShieldCheck, 
+  Wifi, 
+  ChevronRight, 
+  Menu, 
+  X,
+  ArrowRight,
+  Gem,
+  CheckCircle2,
+  PhoneCall,
+  CalendarCheck
+} from 'lucide-react';
+
+const App = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeFleet, setActiveFleet] = useState('executive');
+
+  const bookingUrl = "https://app.gridops.ca/quote-widget/0f72b2ef-d488-4c95-8319-c2d0262d61b0";
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const fleet = {
+    executive: [
+      {
+        id: 1,
+        name: "Mercedes S-Class",
+        capacity: "3 Guests",
+        features: ["Heated Seats", "Burmester Sound", "Privacy"],
+        price: "$110/hr",
+        image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&q=80&w=800",
+        description: "The W223 flagship sedan. Unmatched rear-seat comfort for Toronto's executive elite."
+      },
+      {
+        id: 2,
+        name: "Cadillac Escalade ESV",
+        capacity: "6 Guests",
+        features: ["AWD", "Extended Cargo", "Captain Chairs"],
+        price: "$135/hr",
+        image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800",
+        description: "Full-size SUV excellence. Ideal for winter transport and airport runs with heavy luggage."
+      },
+      {
+        id: 3,
+        name: "Stretch Lincoln MKT",
+        capacity: "10 Guests",
+        features: ["Mini Bar", "Fiber Optic Lighting", "Champagne"],
+        price: "$180/hr",
+        image: "https://d11kcrtzt740u6.cloudfront.net/veh/black-lincoln-mkt-limousine-rental.jpg",
+        description: "Custom stretch engineering for gala arrivals and red-carpet events."
+      },
+      {
+        id: 4,
+        name: "Executive Sprinter",
+        capacity: "14 Guests",
+        features: ["Standing Room", "Apple TV", "Work Desks"],
+        price: "$165/hr",
+        image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=800",
+        description: "Premium Mercedes-Benz high-roof sprinter. The gold standard for mobile boardrooms."
+      }
+    ],
+    coach: [
+      {
+        id: 5,
+        name: "Luxury Mini-Bus",
+        capacity: "24 Guests",
+        features: ["Luggage Space", "Premium Vinyl", "USB Ports"],
+        price: "$195/hr",
+        image: "https://images.unsplash.com/photo-1510522134121-2c99163f4a10?auto=format&fit=crop&q=80&w=800",
+        description: "High-spec mini-coach. Perfect for wedding shuttles and corporate event transfers."
+      },
+      {
+        id: 6,
+        name: "Business Coach",
+        capacity: "32 Guests",
+        features: ["Restroom", "PA System", "Tables"],
+        price: "$240/hr",
+        image: "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&q=80&w=800",
+        description: "Mid-size logistics with full amenities. Designed for regional travel and team retreats."
+      },
+      {
+        id: 7,
+        name: "VIP Motorcoach",
+        capacity: "56 Guests",
+        features: ["Premium Audio", "Full HVAC", "Reclining Seats"],
+        price: "$375/hr",
+        image: "https://images.unsplash.com/photo-1464219789935-c2d9d9aba644?auto=format&fit=crop&q=80&w=800",
+        description: "Full-size touring coach. First-class seating for large groups on long-distance deployments."
+      }
+    ]
+  };
+
+  return (
+    <div className="min-h-screen bg-[#080808] text-zinc-200 font-sans selection:bg-amber-500/30">
+      {/* Navigation */}
+      <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-black/95 backdrop-blur-xl py-4 border-b border-white/10' : 'bg-transparent py-8'}`}>
+        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <Gem className="text-amber-500 w-6 h-6" />
+            <span className="text-2xl font-serif italic text-white tracking-tight">Luxe Charters</span>
+          </div>
+          
+          <div className="hidden md:flex items-center gap-10 text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-400">
+            <a href="#fleet" className="hover:text-amber-500 transition-colors">The Fleet</a>
+            <a href="#booking" className="hover:text-amber-500 transition-colors">Instant Quote</a>
+            <a href="#contact" className="hover:text-amber-500 transition-colors">Contact</a>
+            <a 
+              href={bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#d8b713] text-white px-7 py-3 rounded-md hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-amber-500/10 font-bold uppercase tracking-widest text-[10px]"
+            >
+              Get Quote
+            </a>
+          </div>
+
+          <button className="md:hidden text-white" onClick={() => setMobileMenuOpen(true)}>
+            <Menu />
+          </button>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1600" 
+            className="w-full h-full object-cover opacity-60 scale-105 animate-slow-zoom"
+            alt="Toronto Coach Bus Transport"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-black/40" />
+        </div>
+
+        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center mt-20">
+          <span className="inline-block text-amber-500 font-bold tracking-[0.4em] uppercase text-xs mb-6 px-4 py-2 border border-amber-500/20 bg-amber-500/5 rounded-full backdrop-blur-sm">
+            Toronto Executive Logistics
+          </span>
+          <h1 className="text-6xl md:text-[7rem] font-serif text-white mb-8 leading-[0.9] tracking-tighter">
+            Elite Transport <br />
+            <span className="italic font-light text-amber-50/90">Without Compromise.</span>
+          </h1>
+          <p className="text-zinc-300 text-lg md:text-xl max-w-xl mx-auto mb-12 leading-relaxed font-light">
+            Toronto's premier charter service for executives, private events, and high-capacity group movement. Precise. Professional. Unrivaled.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <a 
+              href={bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#d8b713] text-white font-bold uppercase tracking-[0.2em] text-xs px-12 py-6 rounded-md transition-all flex items-center gap-3 group shadow-2xl shadow-amber-600/20"
+            >
+              Get Quote <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </a>
+            <button className="text-white font-bold uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:text-amber-500 transition-colors">
+              <PhoneCall className="w-4 h-4" /> 416-555-0199
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="bg-black py-20 border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+              <p className="text-3xl font-serif text-white italic mb-1">15 min</p>
+              <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold">Early Arrival</p>
+            </div>
+            <div>
+              <p className="text-3xl font-serif text-white italic mb-1">YYZ / YTZ</p>
+              <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold">Priority Pickup</p>
+            </div>
+            <div>
+              <p className="text-3xl font-serif text-white italic mb-1">14+</p>
+              <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold">Managed Fleet</p>
+            </div>
+            <div>
+              <p className="text-3xl font-serif text-white italic mb-1">24/7</p>
+              <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold">Direct Dispatch</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Fleet Showcase */}
+      <section id="fleet" className="py-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+            <div className="max-w-xl">
+              <span className="text-amber-500 font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Fleet Inventory</span>
+              <h2 className="text-5xl md:text-7xl font-serif text-white italic leading-tight">Toronto's Finest <br />Vessels</h2>
+            </div>
+            <div className="flex gap-2 p-1.5 bg-white/5 rounded-full border border-white/10 backdrop-blur-md">
+              <button 
+                onClick={() => setActiveFleet('executive')}
+                className={`px-10 py-4 rounded-full transition-all text-[10px] font-bold uppercase tracking-widest ${activeFleet === 'executive' ? 'bg-white text-black' : 'text-zinc-500 hover:text-white'}`}
+              >
+                Sedan & Limo
+              </button>
+              <button 
+                onClick={() => setActiveFleet('coach')}
+                className={`px-10 py-4 rounded-full transition-all text-[10px] font-bold uppercase tracking-widest ${activeFleet === 'coach' ? 'bg-white text-black' : 'text-zinc-500 hover:text-white'}`}
+              >
+                Coach & Group
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            {fleet[activeFleet].map((vehicle) => (
+              <div key={vehicle.id} className="group relative bg-[#0c0c0c] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-amber-500/40 transition-all duration-500 flex flex-col shadow-2xl shadow-black">
+                <div className="aspect-[16/9] overflow-hidden relative">
+                  <img 
+                    src={vehicle.image} 
+                    alt={vehicle.name} 
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] to-transparent opacity-40" />
+                  <div className="absolute top-6 right-6">
+                    <span className="bg-black/60 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest text-white border border-white/10">
+                      {vehicle.price}
+                    </span>
+                  </div>
+                </div>
+                <div className="p-10 flex flex-col flex-1">
+                  <div className="mb-6">
+                    <h3 className="text-3xl font-serif text-white mb-3">{vehicle.name}</h3>
+                    <p className="text-zinc-500 text-sm leading-relaxed font-light">{vehicle.description}</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-3 gap-4 mb-8">
+                    {vehicle.features.map(f => (
+                      <div key={f} className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3 h-3 text-amber-500" />
+                        <span className="text-[9px] uppercase tracking-widest font-bold text-zinc-400">{f}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-auto pt-8 border-t border-white/5 flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-zinc-400">
+                      <Users className="w-4 h-4 text-amber-500" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest">{vehicle.capacity}</span>
+                    </div>
+                    <a 
+                      href={bookingUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-zinc-900 hover:bg-[#d8b713] text-white hover:text-white px-8 py-3 rounded-md text-[10px] font-black uppercase tracking-widest transition-all shadow-md"
+                    >
+                      Get Quote
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Booking Widget Section */}
+      <section id="booking" className="py-32 px-6 bg-[#0c0c0c] relative">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="flex justify-center mb-6">
+              <CalendarCheck className="text-amber-500 w-12 h-12" />
+            </div>
+            <h2 className="text-5xl font-serif text-white italic mb-4">Instant Deployment</h2>
+            <p className="text-zinc-500 font-light max-w-lg mx-auto uppercase tracking-widest text-[10px]">Secure your Toronto logistics in real-time.</p>
+          </div>
+          
+          {/* Iframe fit to page height without scrollbars */}
+          <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-white/5 backdrop-blur-sm min-h-[850px]">
+            <iframe 
+              src="https://app.gridops.ca/quote-widget/0f72b2ef-d488-4c95-8319-c2d0262d61b0" 
+              width="100%" 
+              height="850" 
+              frameBorder="0" 
+              scrolling="no"
+              style={{ border: 'none', borderRadius: '8px', overflow: 'hidden' }}
+              title="Quote Widget"
+              className="z-10 relative"
+            ></iframe>
+            
+            {/* Loading Placeholder */}
+            <div className="absolute inset-0 -z-10 flex items-center justify-center text-zinc-700 animate-pulse uppercase tracking-[0.5em] text-xs font-bold">
+              Initializing Logistics...
+            </div>
+          </div>
+          
+          <div className="mt-12 text-center">
+            <p className="text-zinc-600 text-[9px] uppercase tracking-[0.3em] font-bold mb-6">Powered by GridOps Logistics Engine</p>
+            <a 
+              href={bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-4 bg-[#d8b713] text-white px-10 py-5 rounded-md font-black uppercase tracking-[0.2em] text-[10px] transition-all group"
+            >
+              Open Full Booking Engine <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Expertise */}
+      <section id="services" className="py-32 px-6 bg-zinc-950">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <div className="relative order-2 lg:order-1">
+            <img 
+              src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=800" 
+              className="rounded-[3rem] shadow-2xl grayscale hover:grayscale-0 transition-all duration-700 border border-white/5"
+              alt="Luxe Charters Logistics" 
+            />
+          </div>
+          <div className="space-y-8 order-1 lg:order-2">
+            <span className="text-amber-500 font-bold tracking-[0.3em] uppercase text-xs block">Operational Excellence</span>
+            <h2 className="text-5xl md:text-6xl font-serif text-white leading-tight">Navigating Toronto. <br />Seamlessly.</h2>
+            <p className="text-zinc-500 leading-relaxed font-light">
+              We understand that in Toronto, time is the ultimate luxury. Our dispatch team coordinates with real-time municipal traffic data to ensure your vehicle is always where you need it, exactly when you need it.
+            </p>
+            <div className="grid grid-cols-1 gap-4">
+              <div className="p-6 bg-white/5 rounded-2xl border border-white/10 hover:border-amber-500/30 transition-all">
+                <h4 className="text-white font-bold mb-2 uppercase tracking-tighter text-sm">Corporate Roadshows</h4>
+                <p className="text-xs text-zinc-500 font-light">End-to-end itinerary management for multiple stops across the GTA and Financial District.</p>
+              </div>
+              <div className="p-6 bg-white/5 rounded-2xl border border-white/10 hover:border-amber-500/30 transition-all">
+                <h4 className="text-white font-bold mb-2 uppercase tracking-tighter text-sm">Private Aviation</h4>
+                <p className="text-xs text-zinc-500 font-light">Tarmac-side pickups at Pearson and Billy Bishop with dedicated greeter services.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer id="contact" className="py-24 border-t border-white/5 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
+            <div className="col-span-1 md:col-span-2">
+              <div className="flex items-center gap-3 mb-8">
+                <Gem className="text-amber-500 w-6 h-6" />
+                <span className="text-2xl font-serif italic text-white tracking-tight">Luxe Charters</span>
+              </div>
+              <p className="text-zinc-500 text-lg max-w-sm mb-10 leading-relaxed font-light">
+                Toronto's premium standard for high-capacity group logistics and executive ground transport.
+              </p>
+            </div>
+            
+            <div className="space-y-6">
+              <h5 className="text-white font-bold uppercase tracking-widest text-[10px]">Headquarters</h5>
+              <p className="text-zinc-500 text-sm leading-relaxed font-light">
+                161 Bay Street <br />
+                Toronto, ON M5J 2S1 <br />
+                Financial District
+              </p>
+            </div>
+
+            <div className="space-y-6 text-right">
+              <h5 className="text-white font-bold uppercase tracking-widest text-[10px]">Inquiries</h5>
+              <p className="text-amber-500 text-xl font-serif italic">bookings@luxecharters.to</p>
+              <p className="text-white text-sm font-bold tracking-[0.1em]">416.555.0199</p>
+            </div>
+          </div>
+
+          <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between gap-6 text-[10px] uppercase tracking-[0.4em] text-zinc-600 font-bold">
+            <span>© 2026 Luxe Charters Toronto</span>
+            <div className="flex gap-10">
+              <span className="hover:text-white cursor-pointer transition-colors">Privacy Policy</span>
+              <span className="hover:text-white cursor-pointer transition-colors">Safety Standards</span>
+              <span className="hover:text-white cursor-pointer transition-colors">Operator Portal</span>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes slow-zoom {
+          0% { transform: scale(1.0); }
+          100% { transform: scale(1.1); }
+        }
+        .animate-slow-zoom {
+          animation: slow-zoom 30s ease-out infinite alternate;
+        }
+        html {
+          scroll-behavior: smooth;
+        }
+        /* Lock out iframe internal scrolling to force page integration */
+        iframe {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        iframe::-webkit-scrollbar {
+          display: none;
+        }
+      `}} />
+    </div>
+  );
+};
+
+export default App;
