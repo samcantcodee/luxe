@@ -1,327 +1,328 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxe Charters | Toronto Executive Transport</title>
+    <title>Perfect Limo Edmonton | Edmonton's Fastest Limo Booking</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .font-serif { font-family: 'Playfair Display', serif; }
+        :root {
+            --navy-deep: #050b18;
+            --navy-accent: #0a192f;
+            --gold: #c5a059;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--navy-deep);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, .serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #c5a059 0%, #f9e3ab 50%, #c5a059 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #c5a059 0%, #e2c285 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(197, 160, 89, 0.3);
+        }
+        .glass-panel {
+            background: rgba(10, 25, 47, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+        }
         
-        @keyframes slow-zoom {
-            0% { transform: scale(1.0); }
-            100% { transform: scale(1.1); }
+        /* Custom scrollbar for a premium look */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        .animate-slow-zoom {
-            animation: slow-zoom 30s ease-out infinite alternate;
+        ::-webkit-scrollbar-track {
+            background: var(--navy-deep);
         }
-        
-        .gold-btn {
-            background-color: #d8b713;
-            color: white;
-            transition: opacity 0.2s, transform 0.1s;
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
         }
-        .gold-btn:hover { opacity: 0.9; }
-        .gold-btn:active { transform: scale(0.98); }
 
-        iframe {
-            overflow: hidden;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
+        /* Large wrapper for map visibility */
+        .iframe-wrapper {
+            width: 100%;
+            height: 1200px; 
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            background: #0a192f;
+            border-radius: 12px;
+            -webkit-overflow-scrolling: touch;
         }
-        iframe::-webkit-scrollbar { display: none; }
+        
+        iframe.booking-widget {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        #booking {
+            position: relative;
+            z-index: 20;
+        }
     </style>
 </head>
-<body class="bg-[#080808] text-zinc-200 overflow-x-hidden">
+<body>
 
     <!-- Navigation -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-8">
-        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <i data-lucide="gem" class="text-[#d8b713] w-6 h-6"></i>
-                <span class="text-2xl font-serif italic text-white tracking-tight">Luxe Charters</span>
+    <nav class="fixed w-full z-50 glass-panel px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <div class="text-2xl font-bold tracking-tighter">
+                <span class="gold-gradient italic">PERFECT</span> LIMO
             </div>
-            
-            <div class="hidden md:flex items-center gap-10 text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-400">
-                <a href="#fleet" class="hover:text-[#d8b713] transition-colors">The Fleet</a>
-                <a href="#booking" class="hover:text-[#d8b713] transition-colors">Instant Quote</a>
-                <a href="#services" class="hover:text-[#d8b713] transition-colors">Services</a>
-                <a href="https://app.gridops.ca/quote-widget/0f72b2ef-d488-4c95-8319-c2d0262d61b0" target="_blank" class="gold-btn px-7 py-3 rounded-md font-bold uppercase tracking-widest text-[10px]">
-                    Get Quote
-                </a>
-            </div>
-
-            <button class="md:hidden text-white">
-                <i data-lucide="menu"></i>
-            </button>
         </div>
+        <div class="hidden md:flex gap-8 text-sm uppercase tracking-widest font-semibold">
+            <a href="#booking" class="hover:text-[#c5a059] transition text-white">Booking</a>
+            <a href="#services" class="hover:text-[#c5a059] transition text-white">Services</a>
+            <a href="#fleet" class="hover:text-[#c5a059] transition text-white">Fleet</a>
+        </div>
+        <a href="https://app.gridops.ca/quote-widget/401f8df5-adad-4db0-b0dd-e2156aba536f" 
+           target="_blank"
+           class="btn-gold text-black px-6 py-2 rounded-full font-bold text-sm uppercase tracking-wider">
+            Book Now
+        </a>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="relative h-screen flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <img 
-                src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1600" 
-                class="w-full h-full object-cover opacity-60 animate-slow-zoom"
-                alt="Toronto Coach Bus"
-            >
-            <div class="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-black/40"></div>
-        </div>
-
-        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center mt-20">
-            <span class="inline-block text-[#d8b713] font-bold tracking-[0.4em] uppercase text-xs mb-6 px-4 py-2 border border-[#d8b713]/20 bg-[#d8b713]/5 rounded-full backdrop-blur-sm">
-                Toronto Executive Logistics
-            </span>
-            <h1 class="text-6xl md:text-[7rem] font-serif text-white mb-8 leading-[0.9] tracking-tighter">
-                Elite Transport <br>
-                <span class="italic font-light text-amber-50/90">Without Compromise.</span>
-            </h1>
-            <p class="text-zinc-300 text-lg md:text-xl max-w-xl mx-auto mb-12 leading-relaxed font-light">
-                Toronto's premier charter service for executives: private events: and high-capacity group movement. Precise. Professional. Unrivaled.
+    <!-- Hero Section: Adjusted padding to allow for widget overlap -->
+    <header class="relative h-screen flex items-center justify-center overflow-hidden pb-32">
+        <img src="https://www.perfectlimo.ca/wp-content/uploads/2022/12/slider1.jpg" 
+             alt="Luxury Limo Edmonton" 
+             class="absolute inset-0 w-full h-full object-cover opacity-40 scale-105"
+             style="filter: brightness(0.6);">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#050b18]/50 to-[#050b18]"></div>
+        
+        <div class="relative z-10 text-center px-4 max-w-4xl">
+            <h2 class="text-[#c5a059] uppercase tracking-[0.3em] mb-4 text-sm md:text-base font-semibold">Luxury Travel Reimagined</h2>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">Edmonton's Fastest <br><span class="gold-gradient italic">Limo Experience</span></h1>
+            <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto font-light">
+                Premium chauffeur services for weddings, corporate events, and gala nights. The easiest and fastest limo booking in Edmonton.
             </p>
-            
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
-                <a href="#booking" class="gold-btn font-bold uppercase tracking-[0.2em] text-xs px-12 py-6 rounded-md transition-all flex items-center gap-3 shadow-2xl shadow-[#d8b713]/20">
-                    Get Quote <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+                <a href="#booking" class="btn-gold text-black px-10 py-4 rounded-full font-bold text-lg shadow-lg">
+                    Book In 60 Seconds
                 </a>
-                <div class="text-white font-bold uppercase tracking-[0.2em] text-[10px] flex items-center gap-2">
-                    <i data-lucide="phone-call" class="w-4 h-4 text-[#d8b713]"></i> 416-555-0199
-                </div>
+                
+                <!-- Instant Quote Green Button -->
+                <a href="https://app.gridops.ca/quote-widget/401f8df5-adad-4db0-b0dd-e2156aba536f" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   style="display: inline-block; padding: 14px 28px; background-color: #2e8444; color: white; text-decoration: none; border-radius: 30px; font-weight: 600; transition: opacity 0.2s;"
+                   onmouseover="this.style.opacity='0.9'"
+                   onmouseout="this.style.opacity='1'">
+                    Instant Quote
+                </a>
             </div>
         </div>
-    </section>
+    </header>
 
-    <!-- Stats -->
-    <section class="bg-black py-20 border-y border-white/5">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div>
-                    <p class="text-3xl font-serif text-white italic mb-1">15 min</p>
-                    <p class="text-zinc-500 text-[10px] uppercase tracking-widest font-bold">Early Arrival</p>
-                </div>
-                <div>
-                    <p class="text-3xl font-serif text-white italic mb-1">YYZ / YTZ</p>
-                    <p class="text-zinc-500 text-[10px] uppercase tracking-widest font-bold">Priority Pickup</p>
-                </div>
-                <div>
-                    <p class="text-3xl font-serif text-white italic mb-1">14+</p>
-                    <p class="text-zinc-500 text-[10px] uppercase tracking-widest font-bold">Managed Fleet</p>
-                </div>
-                <div>
-                    <p class="text-3xl font-serif text-white italic mb-1">24/7</p>
-                    <p class="text-zinc-500 text-[10px] uppercase tracking-widest font-bold">Direct Dispatch</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Fleet Showcase -->
-    <section id="fleet" class="py-32 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="mb-20">
-                <span class="text-[#d8b713] font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Fleet Inventory</span>
-                <h2 class="text-5xl md:text-7xl font-serif text-white italic leading-tight">Toronto's Finest <br>Vessels</h2>
-            </div>
-
-            <!-- Unified Fleet Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
-                <!-- Mercedes S-Class -->
-                <div class="group bg-[#0c0c0c] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#d8b713]/40 transition-all duration-500 flex flex-col shadow-2xl">
-                    <div class="aspect-[16/9] overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Mercedes S-Class">
-                        <div class="absolute top-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold text-white border border-white/10">$110/hr</div>
-                    </div>
-                    <div class="p-10 flex flex-col flex-1">
-                        <h3 class="text-3xl font-serif text-white mb-3">Mercedes S-Class</h3>
-                        <p class="text-zinc-500 text-sm font-light mb-6">The W223 flagship sedan. Unmatched rear-seat comfort for Toronto's executive elite.</p>
-                        <div class="mt-auto pt-8 border-t border-white/5 flex items-center justify-between">
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400"><i data-lucide="users" class="inline w-4 h-4 mr-2 text-[#d8b713]"></i>3 Guests</span>
-                            <a href="https://app.gridops.ca/quote-widget/0f72b2ef-d488-4c95-8319-c2d0262d61b0" target="_blank" class="bg-zinc-900 hover:bg-[#d8b713] text-white px-8 py-3 rounded-md text-[10px] font-black uppercase tracking-widest transition-all">Get Quote</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cadillac Escalade -->
-                <div class="group bg-[#0c0c0c] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#d8b713]/40 transition-all duration-500 flex flex-col shadow-2xl">
-                    <div class="aspect-[16/9] overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Cadillac Escalade">
-                        <div class="absolute top-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold text-white border border-white/10">$135/hr</div>
-                    </div>
-                    <div class="p-10 flex flex-col flex-1">
-                        <h3 class="text-3xl font-serif text-white mb-3">Cadillac Escalade ESV</h3>
-                        <p class="text-zinc-500 text-sm font-light mb-6">Full-size SUV excellence. Ideal for winter transport and airport runs with heavy luggage.</p>
-                        <div class="mt-auto pt-8 border-t border-white/5 flex items-center justify-between">
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400"><i data-lucide="users" class="inline w-4 h-4 mr-2 text-[#d8b713]"></i>6 Guests</span>
-                            <a href="https://app.gridops.ca/quote-widget/0f72b2ef-d488-4c95-8319-c2d0262d61b0" target="_blank" class="bg-zinc-900 hover:bg-[#d8b713] text-white px-8 py-3 rounded-md text-[10px] font-black uppercase tracking-widest transition-all">Get Quote</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Stretch Limo -->
-                <div class="group bg-[#0c0c0c] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#d8b713]/40 transition-all duration-500 flex flex-col shadow-2xl">
-                    <div class="aspect-[16/9] overflow-hidden relative">
-                        <img src="https://d11kcrtzt740u6.cloudfront.net/veh/black-lincoln-mkt-limousine-rental.jpg" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Stretch Limo">
-                        <div class="absolute top-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold text-white border border-white/10">$180/hr</div>
-                    </div>
-                    <div class="p-10 flex flex-col flex-1">
-                        <h3 class="text-3xl font-serif text-white mb-3">Stretch Lincoln MKT</h3>
-                        <p class="text-zinc-500 text-sm font-light mb-6">Custom stretch engineering for gala arrivals and red-carpet events in Toronto.</p>
-                        <div class="mt-auto pt-8 border-t border-white/5 flex items-center justify-between">
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400"><i data-lucide="users" class="inline w-4 h-4 mr-2 text-[#d8b713]"></i>10 Guests</span>
-                            <a href="https://app.gridops.ca/quote-widget/0f72b2ef-d488-4c95-8319-c2d0262d61b0" target="_blank" class="bg-zinc-900 hover:bg-[#d8b713] text-white px-8 py-3 rounded-md text-[10px] font-black uppercase tracking-widest transition-all">Get Quote</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Executive Sprinter -->
-                <div class="group bg-[#0c0c0c] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#d8b713]/40 transition-all duration-500 flex flex-col shadow-2xl">
-                    <div class="aspect-[16/9] overflow-hidden relative">
-                        <img src="https://imgs.search.brave.com/bgEqsIdtfeG-S5UvW9D3j489IX4Mzv3mWg01pMryHhU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/YWxsYW1lcmljYW5s/aW1vLmNvbS93cC1j/b250ZW50L3VwbG9h/ZHMvMjAxNy8xMi9w/YXJ0eS1idXMtc3By/aW50ZXItbGltby0x/LmpwZw" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Executive Sprinter">
-                        <div class="absolute top-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold text-white border border-white/10">$165/hr</div>
-                    </div>
-                    <div class="p-10 flex flex-col flex-1">
-                        <h3 class="text-3xl font-serif text-white mb-3">Executive Sprinter</h3>
-                        <p class="text-zinc-500 text-sm font-light mb-6">The ultimate mobile boardroom. High-roof interior with custom limousine seating.</p>
-                        <div class="mt-auto pt-8 border-t border-white/5 flex items-center justify-between">
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400"><i data-lucide="users" class="inline w-4 h-4 mr-2 text-[#d8b713]"></i>14 Guests</span>
-                            <a href="https://app.gridops.ca/quote-widget/0f72b2ef-d488-4c95-8319-c2d0262d61b0" target="_blank" class="bg-zinc-900 hover:bg-[#d8b713] text-white px-8 py-3 rounded-md text-[10px] font-black uppercase tracking-widest transition-all">Get Quote</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Luxury Mini-Bus -->
-                <div class="group bg-[#0c0c0c] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#d8b713]/40 transition-all duration-500 flex flex-col shadow-2xl">
-                    <div class="aspect-[16/9] overflow-hidden relative">
-                        <img src="https://imgs.search.brave.com/KhjTGKgLMXYD-gIr0iPfDplUWbOfHLUWLJ9In5L55wc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9taWxp/bW8uY29tLmF1L3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDIyLzA0/L1l1dG9uZy1NaW5p/LUNvYWNoLTMwMHgy/MjUuanBn" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Luxury Mini-Bus">
-                        <div class="absolute top-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold text-white border border-white/10">$195/hr</div>
-                    </div>
-                    <div class="p-10 flex flex-col flex-1">
-                        <h3 class="text-3xl font-serif text-white mb-3">Luxury Mini-Bus</h3>
-                        <p class="text-zinc-500 text-sm font-light mb-6">High-spec mini-coach. Perfect for wedding shuttles and medium corporate deployments.</p>
-                        <div class="mt-auto pt-8 border-t border-white/5 flex items-center justify-between">
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400"><i data-lucide="users" class="inline w-4 h-4 mr-2 text-[#d8b713]"></i>24 Guests</span>
-                            <a href="https://app.gridops.ca/quote-widget/0f72b2ef-d488-4c95-8319-c2d0262d61b0" target="_blank" class="bg-zinc-900 hover:bg-[#d8b713] text-white px-8 py-3 rounded-md text-[10px] font-black uppercase tracking-widest transition-all">Get Quote</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Business Coach -->
-                <div class="group bg-[#0c0c0c] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-[#d8b713]/40 transition-all duration-500 flex flex-col shadow-2xl">
-                    <div class="aspect-[16/9] overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Business Coach">
-                        <div class="absolute top-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold text-white border border-white/10">$240/hr</div>
-                    </div>
-                    <div class="p-10 flex flex-col flex-1">
-                        <h3 class="text-3xl font-serif text-white mb-3">Business Coach</h3>
-                        <p class="text-zinc-500 text-sm font-light mb-6">Mid-size logistics with full amenities. Designed for regional travel and team retreats.</p>
-                        <div class="mt-auto pt-8 border-t border-white/5 flex items-center justify-between">
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400"><i data-lucide="users" class="inline w-4 h-4 mr-2 text-[#d8b713]"></i>32 Guests</span>
-                            <a href="https://app.gridops.ca/quote-widget/0f72b2ef-d488-4c95-8319-c2d0262d61b0" target="_blank" class="bg-zinc-900 hover:bg-[#d8b713] text-white px-8 py-3 rounded-md text-[10px] font-black uppercase tracking-widest transition-all">Get Quote</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Booking Widget Section -->
-    <section id="booking" class="py-32 px-6 bg-[#0c0c0c] relative">
-        <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-16">
-                <i data-lucide="calendar-check" class="text-[#d8b713] w-12 h-12 mx-auto mb-6"></i>
-                <h2 class="text-5xl font-serif text-white italic mb-4">Instant Deployment</h2>
-                <p class="text-zinc-500 font-light max-w-lg mx-auto uppercase tracking-widest text-[10px]">Secure your Toronto logistics in real-time.</p>
-            </div>
+    <!-- Booking Engine Section: Negative margin pulls the widget up -->
+    <section id="booking" class="pb-20 bg-[#050b18]">
+        <div class="container mx-auto px-4 lg:px-10 max-w-[1600px]">
             
-            <div class="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-[#111]">
-                <div class="w-full min-h-[900px]">
+            <!-- OVERLAP DIV: Pulls the engine up into the hero bottom -->
+            <div class="-mt-32 md:-mt-56 lg:-mt-64 mx-auto glass-panel rounded-2xl p-2 md:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative">
+                
+                <div class="text-center mb-8 pt-4">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2 italic gold-gradient">Book Your Premium Ride In 60 Seconds</h2>
+                </div>
+
+                <!-- Decorative Gold Accents -->
+                <div class="absolute top-6 left-6 w-12 h-12 border-t-2 border-l-2 border-[#c5a059]/30"></div>
+                <div class="absolute bottom-6 right-6 w-12 h-12 border-b-2 border-r-2 border-[#c5a059]/30"></div>
+
+                <!-- Iframe Wrapper -->
+                <div class="iframe-wrapper">
                     <iframe 
-                        src="https://app.gridops.ca/quote-widget/0f72b2ef-d488-4c95-8319-c2d0262d61b0" 
-                        width="100%" 
-                        height="900" 
-                        frameBorder="0" 
-                        scrolling="no"
-                        style="border: none; border-radius: 8px;"
-                        title="Quote Widget"
-                    ></iframe>
+                        src="https://app.gridops.ca/quote-widget/401f8df5-adad-4db0-b0dd-e2156aba536f" 
+                        class="booking-widget"
+                        title="Quote Widget">
+                    </iframe>
                 </div>
-            </div>
-            
-            <div class="mt-12 text-center">
-                <a href="https://app.gridops.ca/quote-widget/0f72b2ef-d488-4c95-8319-c2d0262d61b0" target="_blank" class="gold-btn px-10 py-5 rounded-md font-black uppercase tracking-[0.2em] text-[10px] inline-flex items-center gap-4">
-                    Get Full Quote <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </a>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-gray-500 text-xs italic">Encrypted & Secure Checkout | The easiest limo booking experience in Edmonton</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Expertise -->
-    <section id="services" class="py-32 px-6 bg-zinc-950">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <div class="relative order-2 lg:order-1">
-                <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=800" class="rounded-[3rem] shadow-2xl grayscale hover:grayscale-0 transition-all duration-700 border border-white/5" alt="Logistics">
-            </div>
-            <div class="space-y-8 order-1 lg:order-2">
-                <span class="text-[#d8b713] font-bold tracking-[0.3em] uppercase text-xs block">Operational Excellence</span>
-                <h2 class="text-5xl md:text-6xl font-serif text-white leading-tight">Navigating Toronto. <br>Seamlessly.</h2>
-                <p class="text-zinc-500 leading-relaxed font-light">We understand that in Toronto: time is the ultimate luxury. Our dispatch team coordinates with real-time traffic data to ensure your vehicle is always where you need it.</p>
-                <div class="grid grid-cols-1 gap-4">
-                    <div class="p-6 bg-white/5 rounded-2xl border border-white/10 hover:border-[#d8b713]/30 transition-all">
-                        <h4 class="text-white font-bold mb-2 uppercase tracking-tighter text-sm">Corporate Roadshows</h4>
-                        <p class="text-xs text-zinc-500 font-light">End-to-end itinerary management for the Financial District.</p>
+    <!-- Value Props -->
+    <section class="py-16 bg-[#0a192f]">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="text-center p-8 border border-gray-800 rounded-xl hover:border-[#c5a059] transition-all duration-500 group">
+                    <div class="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full bg-[#050b18] group-hover:bg-[#c5a059] transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#c5a059] group-hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
                     </div>
+                    <h3 class="text-2xl font-bold mb-3">60-Second Booking</h3>
+                    <p class="text-gray-400">The fastest and most intuitive booking system in Edmonton. Get your quote and confirm instantly.</p>
+                </div>
+                <div class="text-center p-8 border border-gray-800 rounded-xl hover:border-[#c5a059] transition-all duration-500 group">
+                    <div class="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full bg-[#050b18] group-hover:bg-[#c5a059] transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#c5a059] group-hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.040L3 14.535a11.996 11.996 0 0011.02 8.464 11.996 11.996 0 0011.02-8.464l-1.382-8.511z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Elite Reliability</h3>
+                    <p class="text-gray-400">Professional chauffeurs and meticulously maintained vehicles ensure you arrive on time and in style.</p>
+                </div>
+                <div class="text-center p-8 border border-gray-800 rounded-xl hover:border-[#c5a059] transition-all duration-500 group">
+                    <div class="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full bg-[#050b18] group-hover:bg-[#c5a059] transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#c5a059] group-hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Easiest Booking</h3>
+                    <p class="text-gray-400">Zero phone calls required. Our digital platform is designed for your convenience and a premium user experience.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section id="services" class="py-24 bg-[#050b18]">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-bold italic gold-gradient mb-2">Exclusive Services</h2>
+                    <p class="text-gray-400 uppercase tracking-widest text-sm">Tailored for your most important moments</p>
+                </div>
+                <a href="#booking" class="text-[#c5a059] font-bold border-b border-[#c5a059] pb-1 mt-4 md:mt-0 hover:text-white hover:border-white transition">Book Your Service</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="group relative overflow-hidden rounded-2xl h-96">
+                    <img src="https://www.perfectlimo.ca/wp-content/uploads/2022/12/wedding-limo-rental.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Wedding Limo">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#050b18] to-transparent opacity-80"></div>
+                    <div class="absolute bottom-0 left-0 p-8">
+                        <h4 class="text-2xl font-bold mb-2">Elegant Weddings</h4>
+                        <p class="text-gray-300 text-sm mb-4">Timeless luxury for your perfect day.</p>
+                        <a href="#booking" class="text-[#c5a059] font-bold text-xs uppercase tracking-widest">Instant Quote →</a>
+                    </div>
+                </div>
+
+                <div class="group relative overflow-hidden rounded-2xl h-96">
+                    <img src="https://www.perfectlimo.ca/wp-content/uploads/2022/12/dinner-night-limo-price.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Dinner Night Limo">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#050b18] to-transparent opacity-80"></div>
+                    <div class="absolute bottom-0 left-0 p-8">
+                        <h4 class="text-2xl font-bold mb-2">Night Out</h4>
+                        <p class="text-gray-300 text-sm mb-4">Premium transport for celebrations and fine dining.</p>
+                        <a href="#booking" class="text-[#c5a059] font-bold text-xs uppercase tracking-widest">Instant Quote →</a>
+                    </div>
+                </div>
+
+                <div class="group relative overflow-hidden rounded-2xl h-96">
+                    <img src="https://www.perfectlimo.ca/wp-content/uploads/2022/12/slide.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Corporate Limo">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#050b18] to-transparent opacity-80"></div>
+                    <div class="absolute bottom-0 left-0 p-8">
+                        <h4 class="text-2xl font-bold mb-2">Executive Class</h4>
+                        <p class="text-gray-300 text-sm mb-4">Seamless transfers for business professionals.</p>
+                        <a href="#booking" class="text-[#c5a059] font-bold text-xs uppercase tracking-widest">Instant Quote →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fleet Highlight -->
+    <section id="fleet" class="py-20 relative bg-[#0a192f] overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="lg:w-1/2">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 italic gold-gradient">The Gold Standard Fleet</h2>
+                    <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+                        From iconic white stretch limousines to executive SUVs, we offer Edmonton's most pristine selection of luxury vehicles.
+                    </p>
+                    <ul class="space-y-4 mb-10">
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-[#c5a059] text-black flex items-center justify-center text-xs">✓</span>
+                            <span>Pristine, showroom-ready interiors</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-[#c5a059] text-black flex items-center justify-center text-xs">✓</span>
+                            <span>Bluetooth and premium audio setups</span>
+                        </li>
+                    </ul>
+                    <a href="#booking" class="btn-gold text-black px-8 py-3 rounded-full font-bold uppercase tracking-widest inline-block">Book in 60 Seconds</a>
+                </div>
+                <div class="lg:w-1/2 relative">
+                    <img src="https://www.perfectlimo.ca/wp-content/uploads/2022/12/white_stretch_limo_Edmonton.jpg" alt="Fleet Stretch" class="rounded-2xl shadow-2xl relative z-10 border border-gray-800">
+                    <div class="absolute -top-10 -right-10 w-64 h-64 bg-[#c5a059] opacity-10 rounded-full blur-3xl"></div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer id="contact" class="py-24 border-t border-white/5 px-6">
-        <div class="max-w-7xl mx-auto text-center md:text-left">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center justify-center md:justify-start gap-3 mb-8">
-                        <i data-lucide="gem" class="text-[#d8b713] w-6 h-6"></i>
-                        <span class="text-2xl font-serif italic text-white">Luxe Charters</span>
-                    </div>
-                    <p class="text-zinc-500 text-lg max-w-sm mx-auto md:mx-0 font-light">Toronto's premium standard for high-capacity group logistics.</p>
+    <footer class="bg-[#050b18] border-t border-gray-900 py-16">
+        <div class="container mx-auto px-6 grid md:grid-cols-3 gap-12">
+            <div>
+                <div class="text-3xl font-bold tracking-tighter mb-6">
+                    <span class="gold-gradient italic">PERFECT</span> LIMO
                 </div>
-                <div>
-                    <h5 class="text-white font-bold uppercase tracking-widest text-[10px] mb-6">Headquarters</h5>
-                    <p class="text-zinc-500 text-sm leading-relaxed font-light">161 Bay Street <br> Toronto, ON M5J 2S1</p>
-                </div>
-                <div class="text-center md:text-right">
-                    <h5 class="text-white font-bold uppercase tracking-widest text-[10px] mb-6">Inquiries</h5>
-                    <p class="text-[#d8b713] text-xl font-serif italic mb-2">bookings@luxecharters.to</p>
-                    <p class="text-white text-sm font-bold tracking-[0.1em]">416.555.0199</p>
-                </div>
+                <p class="text-gray-400 max-sm mb-6">
+                    Edmonton's easiest and fastest limo booking platform. Luxury transportation delivered with precision.
+                </p>
             </div>
-            <div class="pt-12 border-t border-white/5 text-[10px] uppercase tracking-[0.4em] text-zinc-600 font-bold flex flex-col md:flex-row justify-between gap-6">
-                <span>© 2026 Luxe Charters Toronto</span>
-                <div class="flex justify-center gap-10">
-                    <span class="hover:text-white cursor-pointer transition-colors">Privacy</span>
-                    <span class="hover:text-white cursor-pointer transition-colors">Safety</span>
-                </div>
+            <div>
+                <h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Services</h4>
+                <ul class="space-y-4 text-gray-400 text-sm">
+                    <li><a href="#booking" class="hover:text-white transition">Instant Quote</a></li>
+                    <li><a href="#services" class="hover:text-white transition">Weddings</a></li>
+                    <li><a href="#services" class="hover:text-white transition">Corporate</a></li>
+                </ul>
             </div>
+            <div>
+                <h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Contact</h4>
+                <p class="text-gray-400 text-sm mb-4">Edmonton, Alberta</p>
+                <p class="text-[#c5a059] font-bold text-lg mb-2">info@perfectlimo.ca</p>
+            </div>
+        </div>
+        <div class="container mx-auto px-6 mt-16 pt-8 border-t border-gray-950 text-center text-gray-600 text-xs">
+            &copy; 2024 Perfect Limo Edmonton. All rights reserved. | Edmonton's Fastest Booking Engine
         </div>
     </footer>
 
     <script>
-        // Initialize Lucide Icons
-        lucide.createIcons();
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                e.preventDefault();
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
 
-        // Navbar Scroll Effect
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
+        // Change nav opacity on scroll
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
             if (window.scrollY > 50) {
-                nav.classList.add('bg-black/95', 'backdrop-blur-xl', 'py-4', 'border-b', 'border-white/10');
-                nav.classList.remove('py-8');
+                nav.style.backgroundColor = 'rgba(5, 11, 24, 0.98)';
             } else {
-                nav.classList.remove('bg-black/95', 'backdrop-blur-xl', 'py-4', 'border-b', 'border-white/10');
-                nav.classList.add('py-8');
+                nav.style.backgroundColor = 'rgba(10, 25, 47, 0.85)';
             }
         });
     </script>
