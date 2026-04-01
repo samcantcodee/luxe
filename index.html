@@ -1,330 +1,678 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfect Limo Edmonton | Edmonton's Fastest Limo Booking</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --navy-deep: #050b18;
-            --navy-accent: #0a192f;
-            --gold: #c5a059;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--navy-deep);
-            color: #ffffff;
-            overflow-x: hidden;
-        }
-        h1, h2, h3, .serif {
-            font-family: 'Playfair Display', serif;
-        }
-        .gold-gradient {
-            background: linear-gradient(135deg, #c5a059 0%, #f9e3ab 50%, #c5a059 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .btn-gold {
-            background: linear-gradient(135deg, #c5a059 0%, #e2c285 100%);
-            transition: all 0.3s ease;
-        }
-        .btn-gold:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(197, 160, 89, 0.3);
-        }
-        .glass-panel {
-            background: rgba(10, 25, 47, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(197, 160, 89, 0.2);
-        }
-        
-        /* Custom scrollbar for a premium look */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--navy-deep);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--gold);
-            border-radius: 10px;
-        }
+import React, { useState, useEffect } from 'react';
 
-        /* Large wrapper for map visibility */
-        .iframe-wrapper {
-            width: 100%;
-            height: 1200px; 
-            overflow-y: auto;
-            overflow-x: hidden;
-            position: relative;
-            background: #0a192f;
-            border-radius: 12px;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        iframe.booking-widget {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+// --- Inline Icons to guarantee preview rendering ---
+const Icon = ({ children, className = "w-6 h-6" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
+);
+const Activity = (p) => <Icon {...p}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></Icon>;
+const ArrowRight = (p) => <Icon {...p}><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></Icon>;
+const Check = (p) => <Icon {...p}><polyline points="20 6 9 17 4 12"></polyline></Icon>;
+const ChevronRight = (p) => <Icon {...p}><polyline points="9 18 15 12 9 6"></polyline></Icon>;
+const Clock = (p) => <Icon {...p}><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></Icon>;
+const Cpu = (p) => <Icon {...p}><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></Icon>;
+const Globe = (p) => <Icon {...p}><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></Icon>;
+const Map = (p) => <Icon {...p}><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></Icon>;
+const Settings = (p) => <Icon {...p}><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></Icon>;
+const Users = (p) => <Icon {...p}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></Icon>;
+const X = (p) => <Icon {...p}><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></Icon>;
+const Car = (p) => <Icon {...p}><path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a2 2 0 0 0-1.6-.8H8.3a2 2 0 0 0-1.6.8L4 11l-5.16.86a1 1 0 0 0-.84.99V16h3m10 0a2 2 0 1 1-4 0m4 0a2 2 0 1 0-4 0m-5 0a2 2 0 1 1-4 0m4 0a2 2 0 1 0-4 0"></path></Icon>;
+const Bus = (p) => <Icon {...p}><path d="M8 6v6m8-6v6m-4-6v6m8 4v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2m16-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8h16V8Z"></path><circle cx="8" cy="18" r="2"></circle><circle cx="16" cy="18" r="2"></circle></Icon>;
 
-        #booking {
-            position: relative;
-            z-index: 20;
-        }
-    </style>
-</head>
-<body>
+// --- Shared UI Components ---
+const Section = ({ children, id, className = '', dark = true }) => (
+  <section id={id} className={`py-24 px-6 md:px-12 lg:px-24 ${dark ? 'bg-gray-950 text-white' : 'bg-white text-gray-900'} ${className}`}>
+    <div className="max-w-7xl mx-auto">
+      {children}
+    </div>
+  </section>
+);
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-panel px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-2">
-            <div class="text-2xl font-bold tracking-tighter">
-                <span class="gold-gradient italic">PERFECT</span> LIMO
+const SectionHeading = ({ title, subtitle, centered = false }) => (
+  <div className={`mb-16 ${centered ? 'text-center' : ''}`}>
+    <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">{title}</h2>
+    {subtitle && <p className="text-lg text-gray-400 max-w-3xl leading-relaxed">{subtitle}</p>}
+  </div>
+);
+
+const Card = ({ children, className = '' }) => (
+  <div className={`bg-gray-900 border border-gray-800 rounded-2xl p-8 hover:border-blue-500/50 transition-all duration-300 ${className}`}>
+    {children}
+  </div>
+);
+
+// --- Main Application ---
+export default function App() {
+  const [activeVertical, setActiveVertical] = useState('limo');
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-gray-950 text-gray-50 font-sans selection:bg-blue-600 selection:text-white">
+      
+      {/* Navigation */}
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${isScrolled ? 'bg-gray-950/80 backdrop-blur-md border-gray-800 py-4' : 'bg-transparent border-transparent py-6'} px-6 md:px-12 lg:px-24`}>
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-3 cursor-pointer">
+            <div className="relative flex items-center justify-center w-10 h-10">
+              <div className="absolute inset-0 bg-blue-600 rounded-full opacity-20 animate-pulse"></div>
+              <div className="w-8 h-8 bg-gray-950 border-[4px] border-white rounded-full flex items-center justify-center relative z-10">
+                <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+              </div>
             </div>
+            <span className="text-2xl font-bold tracking-tight">GridOps</span>
+          </div>
+          <div className="hidden md:flex gap-8 text-sm font-medium text-gray-300">
+            <a href="#problem" className="hover:text-white transition-colors">The Problem</a>
+            <a href="#market" className="hover:text-white transition-colors">Market</a>
+            <a href="#product" className="hover:text-white transition-colors">Platform</a>
+            <a href="#advantage" className="hover:text-white transition-colors">Advantage</a>
+            <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
+          </div>
+          <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50">
+            Invest in GridOps
+          </button>
         </div>
-        <div class="hidden md:flex gap-8 text-sm uppercase tracking-widest font-semibold">
-            <a href="#booking" class="hover:text-[#c5a059] transition text-white">Booking</a>
-            <a href="#services" class="hover:text-[#c5a059] transition text-white">Services</a>
-            <a href="#fleet" class="hover:text-[#c5a059] transition text-white">Fleet</a>
-        </div>
-        <a href="https://app.gridops.ca/quote-widget/401f8df5-adad-4db0-b0dd-e2156aba536f" 
-           target="_blank"
-           class="btn-gold text-black px-6 py-2 rounded-full font-bold text-sm uppercase tracking-wider">
-            Book Now
-        </a>
-    </nav>
+      </nav>
 
-    <!-- Hero Section: Adjusted padding to allow for widget overlap -->
-    <header class="relative h-screen flex items-center justify-center overflow-hidden pb-32">
-        <img src="https://www.perfectlimo.ca/wp-content/uploads/2022/12/slider1.jpg" 
-             alt="Luxury Limo Edmonton" 
-             class="absolute inset-0 w-full h-full object-cover opacity-40 scale-105"
-             style="filter: brightness(0.6);">
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#050b18]/50 to-[#050b18]"></div>
+      {/* Hero Section */}
+      <section className="relative pt-40 pb-32 px-6 md:px-12 lg:px-24 overflow-hidden min-h-screen flex items-center bg-gray-950">
+        <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/30 via-gray-950 to-gray-950"></div>
         
-        <div class="relative z-10 text-center px-4 max-w-4xl">
-            <h2 class="text-[#c5a059] uppercase tracking-[0.3em] mb-4 text-sm md:text-base font-semibold">Luxury Travel Reimagined</h2>
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">Edmonton's Fastest <br><span class="gold-gradient italic">Limo Experience</span></h1>
-            <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto font-light">
-                Premium chauffeur services for weddings, corporate events, and gala nights. The easiest and fastest limo booking in Edmonton.
+        {/* Animated Grid Background */}
+        <div className="absolute inset-0 opacity-[0.03]" 
+             style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-6">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+              </span>
+              Built in Calgary, Alberta
+            </div>
+            <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.1] tracking-tight mb-8">
+              The Operating System for <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">Ground Transportation.</span>
+            </h1>
+            <p className="text-xl text-gray-400 mb-10 leading-relaxed max-w-2xl">
+              While Uber reinvented the car and DoorDash reinvented the restaurant, the $38B charter and limo industry kept running on spreadsheets. We are the connected grid changing everything.
             </p>
-            <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
-                <a href="#booking" class="btn-gold text-black px-10 py-4 rounded-full font-bold text-lg shadow-lg">
-                    Book In 60 Seconds
-                </a>
-                
-                <!-- Instant Quote Green Button -->
-                <a href="https://app.gridops.ca/quote-widget/401f8df5-adad-4db0-b0dd-e2156aba536f" 
-                   target="_blank" 
-                   rel="noopener noreferrer"
-                   style="display: inline-block; padding: 14px 28px; background-color: #2e8444; color: white; text-decoration: none; border-radius: 30px; font-weight: 600; transition: opacity 0.2s;"
-                   onmouseover="this.style.opacity='0.9'"
-                   onmouseout="this.style.opacity='1'">
-                    Instant Quote
-                </a>
+            <div className="flex flex-wrap gap-4">
+              <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-semibold text-lg flex items-center gap-2 transition-all">
+                View Investor Deck <ArrowRight className="w-5 h-5" />
+              </button>
+              <button className="bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-full font-semibold text-lg border border-gray-700 transition-all">
+                Explore the Platform
+              </button>
             </div>
-        </div>
-    </header>
-
-    <!-- Booking Engine Section: Negative margin pulls the widget up -->
-    <section id="booking" class="pb-20 bg-[#050b18]">
-        <div class="container mx-auto px-4 lg:px-10 max-w-[1600px]">
+          </div>
+          
+          <div className="relative lg:h-[600px] flex items-center justify-center">
+            {/* Abstract UI Mockup */}
+            <div className="w-full max-w-lg bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl overflow-hidden relative z-20">
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-800 bg-gray-950">
+                <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
+                <div className="ml-4 text-xs text-gray-500 font-mono">gridops.ca / dashboard</div>
+              </div>
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h3 className="text-lg font-bold text-white">Live Operations</h3>
+                    <p className="text-sm text-gray-400">Calgary Fleet</p>
+                  </div>
+                  <div className="bg-blue-600/10 text-blue-500 px-3 py-1 rounded-md text-sm font-medium flex items-center gap-2">
+                    <Activity className="w-4 h-4" /> 66% Utilization
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  {[
+                    { id: 'BUS-01', type: 'Charter', status: 'In Transit', rev: '$1,200', width: 'w-full' },
+                    { id: 'LIMO-04', type: 'Airport', status: 'Idle', rev: '--', width: 'w-2/3' },
+                    { id: 'SHUTTLE-B', type: 'Corporate', status: 'Scheduled', rev: '$450', width: 'w-5/6' }
+                  ].map((item, i) => (
+                    <div key={i} className="bg-gray-950 p-4 rounded-lg border border-gray-800 flex justify-between items-center group hover:border-blue-500/30 transition-colors">
+                      <div className="flex items-center gap-4">
+                        <div className="p-2 bg-gray-900 rounded-md">
+                          {item.type === 'Charter' ? <Bus className="w-5 h-5 text-gray-400" /> : <Car className="w-5 h-5 text-gray-400" />}
+                        </div>
+                        <div>
+                          <div className="font-bold text-sm text-white">{item.id}</div>
+                          <div className="text-xs text-gray-500">{item.type}</div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className={`text-xs font-medium mb-1 ${item.status === 'In Transit' ? 'text-green-400' : item.status === 'Idle' ? 'text-red-400' : 'text-blue-400'}`}>
+                          {item.status}
+                        </div>
+                        <div className="text-sm font-bold text-white">{item.rev}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
             
-            <!-- OVERLAP DIV: Pulls the engine up into the hero bottom -->
-            <div class="-mt-32 md:-mt-56 lg:-mt-64 mx-auto glass-panel rounded-2xl p-2 md:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative">
-                
-                <div class="text-center mb-8 pt-4">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-2 italic gold-gradient">Book Your Premium Ride In 60 Seconds</h2>
-                </div>
-
-                <!-- Decorative Gold Accents -->
-                <div class="absolute top-6 left-6 w-12 h-12 border-t-2 border-l-2 border-[#c5a059]/30"></div>
-                <div class="absolute bottom-6 right-6 w-12 h-12 border-b-2 border-r-2 border-[#c5a059]/30"></div>
-
-                <!-- Iframe Wrapper -->
-                <div class="iframe-wrapper">
-                    <iframe 
-                        src="https://app.gridops.ca/quote-widget/401f8df5-adad-4db0-b0dd-e2156aba536f" 
-                        class="booking-widget"
-                        title="Quote Widget">
-                    </iframe>
-                </div>
-                
-                <div class="mt-6 text-center">
-                    <p class="text-gray-500 text-xs italic">Encrypted & Secure Checkout | The easiest limo booking experience in Edmonton</p>
-                </div>
-            </div>
+            {/* Decorative elements behind mockup */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-600/20 blur-[100px] rounded-full z-0 pointer-events-none"></div>
+          </div>
         </div>
-    </section>
+      </section>
 
-    <!-- Value Props -->
-    <section class="py-16 bg-[#0a192f]">
-        <div class="container mx-auto px-6">
-            <div class="grid md:grid-cols-3 gap-12">
-                <div class="text-center p-8 border border-gray-800 rounded-xl hover:border-[#c5a059] transition-all duration-500 group">
-                    <div class="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full bg-[#050b18] group-hover:bg-[#c5a059] transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#c5a059] group-hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-3">60-Second Booking</h3>
-                    <p class="text-gray-400">The fastest and most intuitive booking system in Edmonton. Get your quote and confirm instantly.</p>
-                </div>
-                <div class="text-center p-8 border border-gray-800 rounded-xl hover:border-[#c5a059] transition-all duration-500 group">
-                    <div class="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full bg-[#050b18] group-hover:bg-[#c5a059] transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#c5a059] group-hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.040L3 14.535a11.996 11.996 0 0011.02 8.464 11.996 11.996 0 0011.02-8.464l-1.382-8.511z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-3">Elite Reliability</h3>
-                    <p class="text-gray-400">Professional chauffeurs and meticulously maintained vehicles ensure you arrive on time and in style.</p>
-                </div>
-                <div class="text-center p-8 border border-gray-800 rounded-xl hover:border-[#c5a059] transition-all duration-500 group">
-                    <div class="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full bg-[#050b18] group-hover:bg-[#c5a059] transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#c5a059] group-hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-3">Easiest Booking</h3>
-                    <p class="text-gray-400">Zero phone calls required. Our digital platform is designed for your convenience and a premium user experience.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Grid -->
-    <section id="services" class="py-24 bg-[#050b18]">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+      {/* The Problem */}
+      <Section id="problem" className="border-t border-gray-900">
+        <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div>
+            <SectionHeading 
+              title="The $38 Billion Forgotten Corner" 
+              subtitle="Search the top five charter bus companies in your city right now. Click on any of them. Try to book a bus." 
+            />
+            <div className="space-y-6">
+              <div className="flex gap-4">
+                <div className="mt-1 bg-red-500/10 p-2 rounded-full h-fit"><X className="w-6 h-6 text-red-500" /></div>
                 <div>
-                    <h2 class="text-4xl md:text-5xl font-bold italic gold-gradient mb-2">Exclusive Services</h2>
-                    <p class="text-gray-400 uppercase tracking-widest text-sm">Tailored for your most important moments</p>
+                  <h4 className="text-xl font-bold mb-2">The 2026 Status Quo</h4>
+                  <p className="text-gray-400 leading-relaxed">You will find a phone number. A contact form. You will wait hours or days for a PDF quote. Meanwhile, $600k assets sit idle, with deadhead mileage up to 35%.</p>
                 </div>
-                <a href="#booking" class="text-[#c5a059] font-bold border-b border-[#c5a059] pb-1 mt-4 md:mt-0 hover:text-white hover:border-white transition">Book Your Service</a>
+              </div>
+              <div className="flex gap-4">
+                <div className="mt-1 bg-red-500/10 p-2 rounded-full h-fit"><X className="w-6 h-6 text-red-500" /></div>
+                <div>
+                  <h4 className="text-xl font-bold mb-2">The Fragmentation Fracture</h4>
+                  <p className="text-gray-400 leading-relaxed">Limo tools see a limo. Charter tools see a bus. An operator running both stitches 5 different systems together. Inventory becomes invisible. Revenue disappears.</p>
+                </div>
+              </div>
+              <div className="flex gap-4 pt-4">
+                <div className="mt-1 bg-blue-500/10 p-2 rounded-full h-fit"><Check className="w-6 h-6 text-blue-500" /></div>
+                <div>
+                  <h4 className="text-xl font-bold mb-2 text-blue-400">The GridOps Solution</h4>
+                  <p className="text-gray-300 leading-relaxed">We treat the <strong className="text-white">vehicle as the source of truth</strong>. Not the booking. Not the route. One platform linking reservations, dispatch, fleet, and dynamic pricing. Request to Paid in under 60 seconds.</p>
+                </div>
+              </div>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="group relative overflow-hidden rounded-2xl h-96">
-                    <img src="https://www.perfectlimo.ca/wp-content/uploads/2022/12/wedding-limo-rental.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Wedding Limo">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#050b18] to-transparent opacity-80"></div>
-                    <div class="absolute bottom-0 left-0 p-8">
-                        <h4 class="text-2xl font-bold mb-2">Elegant Weddings</h4>
-                        <p class="text-gray-300 text-sm mb-4">Timeless luxury for your perfect day.</p>
-                        <a href="#booking" class="text-[#c5a059] font-bold text-xs uppercase tracking-widest">Instant Quote →</a>
+          </div>
+          <div className="relative">
+             <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/40 to-transparent rounded-2xl blur-2xl"></div>
+             <Card className="relative z-10 p-8 md:p-12">
+               <h3 className="text-2xl font-bold mb-8">The Legacy Tech Stack</h3>
+               <div className="space-y-4 relative before:absolute before:inset-y-0 before:left-[19px] before:w-[2px] before:bg-gray-800">
+                  <div className="relative flex items-center gap-6">
+                    <div className="w-10 h-10 rounded-full bg-gray-800 border-[4px] border-gray-900 flex items-center justify-center z-10"><Clock className="w-4 h-4 text-gray-500"/></div>
+                    <div className="bg-gray-950 border border-gray-800 p-4 rounded-lg flex-1">
+                      <p className="font-bold text-gray-300">Quote Generation</p>
+                      <p className="text-sm text-gray-500 mt-1">Manual PDF creation (24h+ delay)</p>
                     </div>
-                </div>
-
-                <div class="group relative overflow-hidden rounded-2xl h-96">
-                    <img src="https://www.perfectlimo.ca/wp-content/uploads/2022/12/dinner-night-limo-price.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Dinner Night Limo">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#050b18] to-transparent opacity-80"></div>
-                    <div class="absolute bottom-0 left-0 p-8">
-                        <h4 class="text-2xl font-bold mb-2">Night Out</h4>
-                        <p class="text-gray-300 text-sm mb-4">Premium transport for celebrations and fine dining.</p>
-                        <a href="#booking" class="text-[#c5a059] font-bold text-xs uppercase tracking-widest">Instant Quote →</a>
+                  </div>
+                  <div className="relative flex items-center gap-6">
+                    <div className="w-10 h-10 rounded-full bg-gray-800 border-[4px] border-gray-900 flex items-center justify-center z-10"><Map className="w-4 h-4 text-gray-500"/></div>
+                    <div className="bg-gray-950 border border-gray-800 p-4 rounded-lg flex-1">
+                      <p className="font-bold text-gray-300">Dispatch & Routing</p>
+                      <p className="text-sm text-gray-500 mt-1">Whiteboards and separate GPS tools</p>
                     </div>
-                </div>
-
-                <div class="group relative overflow-hidden rounded-2xl h-96">
-                    <img src="https://www.perfectlimo.ca/wp-content/uploads/2022/12/slide.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Corporate Limo">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#050b18] to-transparent opacity-80"></div>
-                    <div class="absolute bottom-0 left-0 p-8">
-                        <h4 class="text-2xl font-bold mb-2">Executive Class</h4>
-                        <p class="text-gray-300 text-sm mb-4">Seamless transfers for business professionals.</p>
-                        <a href="#booking" class="text-[#c5a059] font-bold text-xs uppercase tracking-widest">Instant Quote →</a>
+                  </div>
+                  <div className="relative flex items-center gap-6">
+                    <div className="w-10 h-10 rounded-full bg-gray-800 border-[4px] border-gray-900 flex items-center justify-center z-10"><Globe className="w-4 h-4 text-gray-500"/></div>
+                    <div className="bg-gray-950 border border-gray-800 p-4 rounded-lg flex-1">
+                      <p className="font-bold text-gray-300">Operator Network</p>
+                      <p className="text-sm text-gray-500 mt-1">Separate subscription (Gridd / GNET)</p>
                     </div>
-                </div>
-            </div>
+                  </div>
+               </div>
+             </Card>
+          </div>
         </div>
-    </section>
+      </Section>
 
-    <!-- Fleet Highlight -->
-    <section id="fleet" class="py-20 relative bg-[#0a192f] overflow-hidden">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col lg:flex-row items-center gap-16">
-                <div class="lg:w-1/2">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-6 italic gold-gradient">The Gold Standard Fleet</h2>
-                    <p class="text-gray-300 text-lg mb-8 leading-relaxed">
-                        From iconic white stretch limousines to executive SUVs, we offer Edmonton's most pristine selection of luxury vehicles.
-                    </p>
-                    <ul class="space-y-4 mb-10">
-                        <li class="flex items-center gap-3">
-                            <span class="w-6 h-6 rounded-full bg-[#c5a059] text-black flex items-center justify-center text-xs">✓</span>
-                            <span>Pristine, showroom-ready interiors</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <span class="w-6 h-6 rounded-full bg-[#c5a059] text-black flex items-center justify-center text-xs">✓</span>
-                            <span>Bluetooth and premium audio setups</span>
-                        </li>
-                    </ul>
-                    <a href="#booking" class="btn-gold text-black px-8 py-3 rounded-full font-bold uppercase tracking-widest inline-block">Book in 60 Seconds</a>
-                </div>
-                <div class="lg:w-1/2 relative">
-                    <img src="https://www.perfectlimo.ca/wp-content/uploads/2022/12/white_stretch_limo_Edmonton.jpg" alt="Fleet Stretch" class="rounded-2xl shadow-2xl relative z-10 border border-gray-800">
-                    <div class="absolute -top-10 -right-10 w-64 h-64 bg-[#c5a059] opacity-10 rounded-full blur-3xl"></div>
-                </div>
+      {/* Market Data (Interactive) */}
+      <Section id="market" className="bg-gray-900 border-y border-gray-800">
+        <SectionHeading 
+          title="The Market Opportunity" 
+          subtitle="The Canadian private ground transportation market is wide open. Over 87% of operators are independent with fewer than 25 vehicles. They are desperate for modern infrastructure."
+          centered
+        />
+        
+        <div className="grid lg:grid-cols-3 gap-8 mb-16">
+          <Card className="text-center group">
+            <div className="w-16 h-16 mx-auto bg-blue-900/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <Car className="w-8 h-8 text-blue-500" />
             </div>
+            <h3 className="text-4xl font-black mb-2">~3,500</h3>
+            <p className="text-lg font-bold text-gray-300 mb-2">Limo Operators</p>
+            <p className="text-sm text-gray-500">Highest concentration in Ontario & BC. Most run 1-2 vehicles with zero tech stack.</p>
+          </Card>
+          <Card className="text-center group">
+            <div className="w-16 h-16 mx-auto bg-purple-900/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <Bus className="w-8 h-8 text-purple-500" />
+            </div>
+            <h3 className="text-4xl font-black mb-2">988</h3>
+            <p className="text-lg font-bold text-gray-300 mb-2">Charter Companies</p>
+            <p className="text-sm text-gray-500">Post-pandemic contraction left remaining operators doing more work with fewer resources.</p>
+          </Card>
+          <Card className="text-center group">
+            <div className="w-16 h-16 mx-auto bg-teal-900/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <Map className="w-8 h-8 text-teal-500" />
+            </div>
+            <h3 className="text-4xl font-black mb-2">989</h3>
+            <p className="text-lg font-bold text-gray-300 mb-2">Shuttle Operators</p>
+            <p className="text-sm text-gray-500">Airport, hotel, and fixed-route specialists deeply underserved by hybrid tools.</p>
+          </Card>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="bg-[#050b18] border-t border-gray-900 py-16">
-        <div class="container mx-auto px-6 grid md:grid-cols-3 gap-12">
+        {/* Digital Divide Chart */}
+        <div className="bg-gray-950 rounded-2xl p-8 border border-gray-800">
+          <h3 className="text-2xl font-bold mb-8">The Digital Divide (Adoption Tiers)</h3>
+          
+          <div className="space-y-8">
             <div>
-                <div class="text-3xl font-bold tracking-tighter mb-6">
-                    <span class="gold-gradient italic">PERFECT</span> LIMO
-                </div>
-                <p class="text-gray-400 max-sm mb-6">
-                    Edmonton's easiest and fastest limo booking platform. Luxury transportation delivered with precision.
+              <div className="flex justify-between mb-2 text-sm">
+                <span className="font-bold text-white">Category 1: No Tech (Phone & Paper)</span>
+                <span className="text-gray-400">~2,141 Operators (39%)</span>
+              </div>
+              <div className="w-full bg-gray-800 rounded-full h-4 overflow-hidden">
+                <div className="bg-blue-600 h-4 rounded-full transition-all duration-1000 ease-out" style={{ width: '39%' }}></div>
+              </div>
+              <p className="text-xs text-gray-500 mt-2">GridOps Year 1 Target: Immediate conversion via low barrier to entry.</p>
+            </div>
+
+            <div>
+              <div className="flex justify-between mb-2 text-sm">
+                <span className="font-bold text-white">Category 2: Base Tech (Outdated Systems)</span>
+                <span className="text-gray-400">~2,639 Operators (48%)</span>
+              </div>
+              <div className="w-full bg-gray-800 rounded-full h-4 overflow-hidden">
+                <div className="bg-indigo-500 h-4 rounded-full transition-all duration-1000 ease-out delay-100" style={{ width: '48%' }}></div>
+              </div>
+              <p className="text-xs text-gray-500 mt-2">GridOps Year 2 Target: Replace legacy tools (LimoAnywhere, Distinctive Systems).</p>
+            </div>
+
+            <div>
+              <div className="flex justify-between mb-2 text-sm">
+                <span className="font-bold text-white">Category 3: High Tech (Enterprise)</span>
+                <span className="text-gray-400">~696 Operators (13%)</span>
+              </div>
+              <div className="w-full bg-gray-800 rounded-full h-4 overflow-hidden">
+                <div className="bg-gray-600 h-4 rounded-full transition-all duration-1000 ease-out delay-200" style={{ width: '13%' }}></div>
+              </div>
+              <p className="text-xs text-gray-500 mt-2">GridOps Year 3+ Target: Capture via advanced network/API capabilities.</p>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* The Product Vision (Interactive Tabs) */}
+      <Section id="product">
+        <SectionHeading 
+          title="One Platform. Three Verticals." 
+          subtitle="Every legacy platform was built for one vertical and retrofitted for the others. GridOps was designed from day one to serve all three from a single vehicle-first architecture."
+          centered
+        />
+
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
+          {['limo', 'charter', 'shuttle'].map((tab) => (
+            <button 
+              key={tab}
+              onClick={() => setActiveVertical(tab)}
+              className={`px-8 py-3 rounded-full font-bold text-sm transition-all capitalize ${
+                activeVertical === tab 
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/40' 
+                : 'bg-gray-900 text-gray-400 hover:bg-gray-800 hover:text-white border border-gray-800'
+              }`}
+            >
+              {tab} Operators
+            </button>
+          ))}
+        </div>
+
+        <div className="bg-gray-900 border border-gray-800 rounded-3xl p-8 md:p-12 min-h-[400px]">
+          {activeVertical === 'limo' && (
+            <div className="grid md:grid-cols-2 gap-12 items-center animate-in fade-in duration-500">
+              <div>
+                <h3 className="text-3xl font-bold mb-4">Elevate the Client Experience</h3>
+                <p className="text-gray-400 mb-8 leading-relaxed">
+                  The solo owner-operator is a crucial customer for GridOps. No budget for expensive software. No IT support. They need something that works immediately and makes them look professional.
                 </p>
-            </div>
-            <div>
-                <h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Services</h4>
-                <ul class="space-y-4 text-gray-400 text-sm">
-                    <li><a href="#booking" class="hover:text-white transition">Instant Quote</a></li>
-                    <li><a href="#services" class="hover:text-white transition">Weddings</a></li>
-                    <li><a href="#services" class="hover:text-white transition">Corporate</a></li>
+                <ul className="space-y-4">
+                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-blue-500" /> Instant online booking widget for your website</li>
+                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-blue-500" /> Real-time pricing engine based on distance/time</li>
+                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-blue-500" /> Automated driver scheduling and dispatch</li>
+                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-blue-500" /> The answer to Uber Elite for independent operators</li>
                 </ul>
+              </div>
+              <div className="bg-gray-950 rounded-2xl p-6 border border-gray-800 relative">
+                 <div className="absolute top-4 right-4 bg-blue-600/20 text-blue-400 text-xs px-2 py-1 rounded">Mobile View</div>
+                 <div className="space-y-4">
+                   <div className="bg-gray-900 p-4 rounded-xl">
+                     <p className="text-xs text-gray-500 mb-1">Upcoming Trip</p>
+                     <div className="flex justify-between items-center">
+                       <p className="font-bold">YYC Airport Transfer</p>
+                       <p className="text-blue-400 font-bold">$145.00</p>
+                     </div>
+                     <div className="mt-4 flex gap-2">
+                       <div className="flex-1 bg-gray-800 h-8 rounded-md animate-pulse"></div>
+                       <div className="w-10 bg-blue-600/20 rounded-md"></div>
+                     </div>
+                   </div>
+                   <div className="bg-gray-900 p-4 rounded-xl opacity-50">
+                     <div className="h-4 bg-gray-800 w-1/2 rounded mb-2"></div>
+                     <div className="h-10 bg-gray-800 w-full rounded"></div>
+                   </div>
+                 </div>
+              </div>
             </div>
-            <div>
-                <h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Contact</h4>
-                <p class="text-gray-400 text-sm mb-4">Edmonton, Alberta</p>
-                <p class="text-[#c5a059] font-bold text-lg mb-2">info@perfectlimo.ca</p>
+          )}
+
+          {activeVertical === 'charter' && (
+            <div className="grid md:grid-cols-2 gap-12 items-center animate-in fade-in duration-500">
+              <div>
+                <h3 className="text-3xl font-bold mb-4">Complex Quoting, Simplified</h3>
+                <p className="text-gray-400 mb-8 leading-relaxed">
+                  Charter bookings are large, lead times are long, and quoting is complex. We replace the 24-hour PDF cycle with instant, accurate pricing that accounts for deadhead, driver hours, and minimums.
+                </p>
+                <ul className="space-y-4">
+                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-purple-500" /> Advanced Pricing Rules (Peak, Night, Weekend multipliers)</li>
+                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-purple-500" /> Driver Hours of Service & Safety tracking</li>
+                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-purple-500" /> Visual calendar with drag-and-drop vehicle blocking</li>
+                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-purple-500" /> Direct integration with Wanderu & BusBud</li>
+                </ul>
+              </div>
+              <div className="bg-gray-950 rounded-2xl p-6 border border-gray-800 relative">
+                <div className="absolute top-4 right-4 bg-purple-600/20 text-purple-400 text-xs px-2 py-1 rounded">Quote Engine</div>
+                <div className="mt-8 space-y-3">
+                  <div className="flex justify-between text-sm border-b border-gray-800 pb-2">
+                    <span className="text-gray-400">Base Vehicle Rate (56-Pax)</span>
+                    <span>$800.00</span>
+                  </div>
+                  <div className="flex justify-between text-sm border-b border-gray-800 pb-2">
+                    <span className="text-gray-400">Distance (350km @ $2.50)</span>
+                    <span>$875.00</span>
+                  </div>
+                  <div className="flex justify-between text-sm border-b border-gray-800 pb-2">
+                    <span className="text-gray-400">Weekend Multiplier (1.2x)</span>
+                    <span className="text-purple-400">+$335.00</span>
+                  </div>
+                  <div className="flex justify-between font-bold pt-2">
+                    <span>Total Quoted Price</span>
+                    <span className="text-xl">$2,010.00</span>
+                  </div>
+                  <button className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg mt-4 transition-colors">
+                    Send to Customer
+                  </button>
+                </div>
+              </div>
             </div>
-        </div>
-        <div class="container mx-auto px-6 mt-16 pt-8 border-t border-gray-950 text-center text-gray-600 text-xs">
-            &copy; 2024 Perfect Limo Edmonton. All rights reserved. | Edmonton's Fastest Booking Engine
-        </div>
-    </footer>
+          )}
 
-    <script>
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                e.preventDefault();
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
+          {activeVertical === 'shuttle' && (
+            <div className="grid md:grid-cols-2 gap-12 items-center animate-in fade-in duration-500">
+              <div>
+                <h3 className="text-3xl font-bold mb-4">Per-Seat Inventory Mastery</h3>
+                <p className="text-gray-400 mb-8 leading-relaxed">
+                  For scheduled routes, airport transfers, and corporate shuttles. The vehicle becomes a per-seat asset. When the charter isn't running, sell the seats individually. Never let inventory go invisible.
+                </p>
+                <ul className="space-y-4">
+                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-teal-500" /> Real-time capacity tracking (Booking closes when full)</li>
+                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-teal-500" /> Route-specific pricing and ticketing</li>
+                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-teal-500" /> Corporate account portals with monthly invoicing</li>
+                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-teal-500" /> Switch seamlessly between Charter and Shuttle modes</li>
+                </ul>
+              </div>
+              <div className="bg-gray-950 rounded-2xl p-6 border border-gray-800 relative">
+                <div className="absolute top-4 right-4 bg-teal-600/20 text-teal-400 text-xs px-2 py-1 rounded">Seat Manifest</div>
+                <div className="mt-8 grid grid-cols-4 gap-2">
+                  {/* Visual representation of bus seats */}
+                  {Array.from({ length: 24 }).map((_, i) => (
+                    <div key={i} className={`h-8 rounded flex items-center justify-center text-xs font-bold ${
+                      i < 18 ? 'bg-teal-900/50 text-teal-500 border border-teal-800' : 'bg-gray-800 text-gray-500'
+                    }`}>
+                      {i < 18 ? 'Sold' : 'Open'}
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 flex justify-between items-center text-sm">
+                  <span className="text-gray-400">18/24 Seats Filled</span>
+                  <span className="font-bold text-teal-400">75% Capacity</span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </Section>
 
-        // Change nav opacity on scroll
-        window.addEventListener('scroll', function() {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 50) {
-                nav.style.backgroundColor = 'rgba(5, 11, 24, 0.98)';
-            } else {
-                nav.style.backgroundColor = 'rgba(10, 25, 47, 0.85)';
-            }
-        });
-    </script>
-</body>
-</html>
+      {/* Competitive Landscape */}
+      <Section id="competitors" className="bg-gray-900 border-y border-gray-800">
+        <SectionHeading 
+          title="Dinosaurs and Predators" 
+          subtitle="The landscape is dominated by 40-year-old incumbents that stopped innovating, and modern aggregators that steal margins. We are the sovereign alternative."
+          centered
+        />
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse min-w-[800px]">
+            <thead>
+              <tr className="border-b border-gray-800">
+                <th className="py-6 px-4 font-bold text-lg w-1/4">Feature</th>
+                <th className="py-6 px-4 font-bold text-gray-500 text-center w-1/4">Legacy Systems<br/><span className="text-xs font-normal">(Distinctive, LimoAnywhere)</span></th>
+                <th className="py-6 px-4 font-bold text-gray-500 text-center w-1/4">Aggregators<br/><span className="text-xs font-normal">(CharterUp)</span></th>
+                <th className="py-6 px-4 font-bold text-blue-500 text-center w-1/4 text-xl">GridOps</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-800">
+              {[
+                { name: "Vehicle as Single Source of Truth", legacy: false, agg: false, grid: true },
+                { name: "Charter + Limo + Shuttle in One", legacy: false, agg: false, grid: true },
+                { name: "0% Commission on Bookings", legacy: false, agg: false, grid: true }, 
+                { name: "Modern, Sub-60s Booking Flow", legacy: false, agg: true, grid: true },
+                { name: "AI-Native Development Speed", legacy: false, agg: false, grid: true },
+                { name: "Operator Owns the Customer", legacy: true, agg: false, grid: true },
+              ].map((row, i) => (
+                <tr key={i} className="hover:bg-gray-800/30 transition-colors">
+                  <td className="py-4 px-4 font-medium">{row.name}</td>
+                  <td className="py-4 px-4 text-center">
+                    {row.legacy ? <Check className="w-5 h-5 text-gray-600 mx-auto" /> : <X className="w-5 h-5 text-gray-700 mx-auto" />}
+                  </td>
+                  <td className="py-4 px-4 text-center">
+                    {row.agg ? <Check className="w-5 h-5 text-gray-600 mx-auto" /> : <X className="w-5 h-5 text-gray-700 mx-auto" />}
+                  </td>
+                  <td className="py-4 px-4 text-center bg-blue-900/10">
+                    {row.grid ? <Check className="w-6 h-6 text-blue-500 mx-auto" /> : <X className="w-5 h-5 text-red-500 mx-auto" />}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Section>
+
+      {/* Strategic Advantage & GTM */}
+      <Section id="advantage">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="order-2 lg:order-1 relative">
+            <div className="absolute inset-0 bg-blue-600/10 blur-3xl rounded-full"></div>
+            <div className="grid grid-cols-2 gap-4 relative z-10">
+              <Card className="p-6">
+                <Settings className="w-8 h-8 text-blue-500 mb-4" />
+                <h4 className="font-bold mb-2">Phase 1: The Reservation</h4>
+                <p className="text-sm text-gray-400">Earn trust, sign operators, prove the product with free/low-cost entry.</p>
+              </Card>
+              <Card className="p-6 translate-y-8">
+                <Globe className="w-8 h-8 text-purple-500 mb-4" />
+                <h4 className="font-bold mb-2">Phase 2: Connectivity</h4>
+                <p className="text-sm text-gray-400">Build the network linking operators. Competes directly with Gridd/GNET.</p>
+              </Card>
+              <Card className="p-6">
+                <Users className="w-8 h-8 text-teal-500 mb-4" />
+                <h4 className="font-bold mb-2">Phase 3: Marketplace</h4>
+                <p className="text-sm text-gray-400">Become the demand engine. Compete with aggregators directly.</p>
+              </Card>
+              <Card className="p-6 translate-y-8">
+                <Cpu className="w-8 h-8 text-red-500 mb-4" />
+                <h4 className="font-bold mb-2">AI-Native Ops</h4>
+                <p className="text-sm text-gray-400">One person does the work of five. Ship features in days, not months.</p>
+              </Card>
+            </div>
+          </div>
+          <div className="order-1 lg:order-2">
+            <SectionHeading 
+              title="The Grid Strategy" 
+              subtitle="We don't optimize for revenue in Year 1. We optimize for nodes. Every operator is a node in the grid." 
+            />
+            <p className="text-gray-300 leading-relaxed mb-6">
+              GridOps is built differently. We are an AI-native company. That is not a feature we bolted on; it is how we work. Our product development, sales motion, marketing, and operations run on AI.
+            </p>
+            <p className="text-gray-300 leading-relaxed mb-8">
+              Legacy competitors carry technical debt and slow release cycles. When an operator asks us for a feature, we build it in days. Our structural advantage is agility, and it compounds over time.
+            </p>
+            <div className="bg-gray-900 border-l-4 border-blue-600 p-6 rounded-r-lg">
+              <p className="italic text-gray-400 text-lg">"The reservation system gets us in the door. The grid is how we win."</p>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* Pricing Strategy */}
+      <Section id="pricing" className="bg-gray-900 border-t border-gray-800">
+        <SectionHeading 
+          title="Pricing Built for Growth" 
+          subtitle="Three tiers designed to remove every barrier to entry. We earn when operators earn."
+          centered
+        />
+        
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {/* Free Tier */}
+          <Card className="relative overflow-hidden border-gray-800 hover:border-blue-500/50">
+            <div className="p-8">
+              <h3 className="text-2xl font-bold mb-2">Starter Free</h3>
+              <p className="text-gray-400 text-sm mb-6 h-10">Perfect for solo operators & first-time tech users.</p>
+              <div className="mb-6">
+                <span className="text-5xl font-black">$0</span>
+                <span className="text-gray-500">/mo</span>
+              </div>
+              <ul className="space-y-3 mb-8 text-sm text-gray-300">
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-blue-500" /> Full booking widget</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-blue-500" /> Standard Pricing Engine</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-blue-500" /> CRM & Dispatch</li>
+                <li className="flex items-center gap-2 text-yellow-500 font-medium"><Activity className="w-4 h-4" /> 3% fee charged to passenger</li>
+              </ul>
+              <button className="w-full bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-xl font-bold transition-colors">
+                Start Free
+              </button>
+            </div>
+          </Card>
+
+          {/* Paid Tier 1 */}
+          <Card className="relative overflow-hidden border-blue-600/50 shadow-lg shadow-blue-500/10 transform md:-translate-y-4 bg-gray-900 z-10">
+            <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-400 to-blue-600"></div>
+            <div className="p-8">
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="text-2xl font-bold">Model A</h3>
+                <span className="bg-blue-600/20 text-blue-400 text-xs px-2 py-1 rounded-full font-bold tracking-wider uppercase">Sweet Spot</span>
+              </div>
+              <p className="text-gray-400 text-sm mb-6 h-10">Small fleets with predictable, growing volume.</p>
+              <div className="mb-6">
+                <span className="text-5xl font-black">$79</span>
+                <span className="text-gray-500">/mo</span>
+              </div>
+              <ul className="space-y-3 mb-8 text-sm text-gray-300">
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-blue-500" /> Everything in Free</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-blue-500" /> Remove passenger fee</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-blue-500" /> Advanced Pricing Rules</li>
+                <li className="flex items-center gap-2 text-blue-400 font-medium"><Activity className="w-4 h-4" /> $1.00 - $1.50 / booking</li>
+              </ul>
+              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition-colors shadow-lg shadow-blue-500/20">
+                Choose Model A
+              </button>
+            </div>
+          </Card>
+
+          {/* Paid Tier 2 */}
+          <Card className="relative overflow-hidden border-gray-800 hover:border-blue-500/50">
+            <div className="p-8">
+              <h3 className="text-2xl font-bold mb-2">Model B</h3>
+              <p className="text-gray-400 text-sm mb-6 h-10">High volume operators and established routes.</p>
+              <div className="mb-6">
+                <span className="text-5xl font-black">$149</span>
+                <span className="text-gray-500">/mo</span>
+              </div>
+              <ul className="space-y-3 mb-8 text-sm text-gray-300">
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-blue-500" /> Everything in Model A</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-blue-500" /> Priority Support</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-blue-500" /> Multi-location mgmt</li>
+                <li className="flex items-center gap-2 text-green-400 font-medium"><Activity className="w-4 h-4" /> $0.25 - $0.50 / booking</li>
+              </ul>
+              <button className="w-full bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-xl font-bold transition-colors">
+                Choose Model B
+              </button>
+            </div>
+          </Card>
+        </div>
+      </Section>
+
+      {/* Team Section */}
+      <Section id="team">
+        <SectionHeading 
+          title="Two Sides of the Same Coin" 
+          subtitle="Built by a team that knows how to sell technology to operators, and how to engineer it to scale."
+          centered
+        />
+        <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+          <Card className="text-center group">
+            <div className="w-24 h-24 mx-auto rounded-full bg-gray-800 mb-6 overflow-hidden border-4 border-gray-900 group-hover:border-blue-500 transition-colors">
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sam&backgroundColor=1f2937" alt="Sam" className="w-full h-full object-cover" />
+            </div>
+            <h3 className="text-2xl font-bold">Sam Rostainajad</h3>
+            <p className="text-blue-500 font-medium mb-4">Co-Founder & CEO</p>
+            <p className="text-gray-400 text-sm leading-relaxed text-left">
+              15 years in sales leadership. Former Head of Sales & Implementation at Zaui Software. Rebuilt their entire sales engine and understands the precise pain points of transportation operators. The commercial engine of GridOps.
+            </p>
+          </Card>
+          <Card className="text-center group">
+            <div className="w-24 h-24 mx-auto rounded-full bg-gray-800 mb-6 overflow-hidden border-4 border-gray-900 group-hover:border-blue-500 transition-colors">
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Suleiman&backgroundColor=1f2937" alt="Suleiman" className="w-full h-full object-cover" />
+            </div>
+            <h3 className="text-2xl font-bold">Suleiman Mamman</h3>
+            <p className="text-blue-500 font-medium mb-4">Co-Founder & CTO</p>
+            <p className="text-gray-400 text-sm leading-relaxed text-left">
+              Senior full-stack engineer with 10+ years across fintech, e-commerce, and logistics. Former engineering lead at Andela. Architect of GridOps' complex real-time quoting engine. The technical foundation of the platform.
+            </p>
+          </Card>
+        </div>
+      </Section>
+
+      {/* Footer / CTA */}
+      <footer className="bg-black py-16 border-t border-gray-900 text-center px-6">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight">Ready to build the grid?</h2>
+          <p className="text-gray-400 mb-10 text-lg">
+            GridOps is actively raising investment to accelerate customer acquisition and build the connectivity layer that defines our long-term moat.
+          </p>
+          <div className="flex justify-center gap-4 flex-wrap">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-bold text-lg flex items-center gap-2 transition-all">
+              Contact Founders <ChevronRight className="w-5 h-5" />
+            </button>
+            <button className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 rounded-full font-bold text-lg border border-gray-800 transition-all">
+              Request Full Deck
+            </button>
+          </div>
+          <div className="mt-16 pt-8 border-t border-gray-900 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-600">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-blue-600 rounded-md flex items-center justify-center text-white font-bold text-xs">G</div>
+              <span>© 2026 GridOps. Calgary, Alberta.</span>
+            </div>
+            <div className="flex gap-6">
+              <a href="#" className="hover:text-white transition-colors">Privacy</a>
+              <a href="#" className="hover:text-white transition-colors">Terms</a>
+              <a href="#" className="hover:text-white transition-colors">Investors</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
